@@ -1,5 +1,6 @@
 package xstefanox;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.Collections;
@@ -9,6 +10,9 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.hateoas.hal.ResourcesMixin;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -41,6 +45,13 @@ public class ExampleConfiguration extends WebMvcConfigurerAdapter {
      */
     @Bean
     public MappingJackson2HttpMessageConverter jacksonMessageConverter(@Qualifier("_halObjectMapper") ObjectMapper halObjectMapper) {
+
+//        Jackson2HalModule jackson2HalModule = new Jackson2HalModule();
+//        jackson2HalModule.setMixInAnnotation(Resources.class, ResourcesMixin.class);
+//
+//        halObjectMapper.registerModule(jackson2HalModule);
+
+//        halObjectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS)
 
         MappingJackson2HttpMessageConverter jacksonMessageConverter = new MappingJackson2HttpMessageConverter();
         jacksonMessageConverter.setObjectMapper(halObjectMapper);
