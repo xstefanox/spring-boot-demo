@@ -73,6 +73,23 @@ public class UserController {
     }
 
     @RequestMapping(
+            path = "/empty",
+            method = GET)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", paramType = "query", dataType = "int", allowableValues = "range[1, infinity]", defaultValue = "0"),
+            @ApiImplicitParam(name = "size", paramType = "query", dataType = "int", allowableValues = "range[1, infinity]"),
+            @ApiImplicitParam(name = "sort", paramType = "query", dataType = "string")
+    })
+    public PagedResources<UserResource> getEmptyUsers(@ApiIgnore Pageable pageable) throws JsonProcessingException {
+
+        LOGGER.debug("pageable = {}", pageable);
+
+        UserResourceAssembler userResourceAssembler = new UserResourceAssembler(UserController.class, UserResource.class);
+
+        return userPagedResourcesAssembler.toResource(new PageImpl<>(new ArrayList<>()), userResourceAssembler);
+    }
+
+    @RequestMapping(
             path = "/{userId}",
             method = GET)
     public UserResource getUser(@PathVariable String userId) {

@@ -1,13 +1,13 @@
-package xstefanox;
+package xstefanox.hateoas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
-import org.springframework.hateoas.hal.ResourcesMixin;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAda
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 @Service
-public class HalBeanPostProcessor implements BeanPostProcessor {
+public class AlwaysSerializingHalObjectMapperBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object BeanPostProcessor, String beanName) throws BeansException {
@@ -47,6 +47,7 @@ public class HalBeanPostProcessor implements BeanPostProcessor {
             converters = template.getMessageConverters();
         }
 
+        // process only the MappingJackson2HttpMessageConverter created to serialize HAL-formatted JSON
         if (converters != null) {
             for (HttpMessageConverter<?> converter : converters) {
                 if (converter instanceof MappingJackson2HttpMessageConverter) {
@@ -54,10 +55,9 @@ public class HalBeanPostProcessor implements BeanPostProcessor {
                     ObjectMapper objectMapper = halConverterCandidate.getObjectMapper();
                     if (Jackson2HalModule.isAlreadyRegisteredIn(objectMapper)) {
 
-                        Jackson2HalModule jackson2HalModule = new Jackson2HalModule();
-                        jackson2HalModule.setMixInAnnotation(Resources.class, AlwaysSerializingResourcesMixin.class);
-
-                        objectMapper.registerModule(jackson2HalModule);
+                        // override the default mixins with the ones configured to always serialize empty HAL properties
+                        objectMapper.addMixIn(Resources.class, AlwaysSerializingResourcesMixin.class);
+                        objectMapper.addMixIn(ResourceSupport.class, AlwaysSerializingResourceSupportMixin.class);
 
                         return bean;
                     }
