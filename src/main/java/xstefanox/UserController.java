@@ -32,20 +32,20 @@ public class UserController {
     static {
         Map<String, User> users = new HashMap<>();
 
-//        users.put("123", new User()
-//                .setId("123")
-//                .setFirstName("Leeroy")
-//                .setLastName("Jenkins"));
-//
-//        users.put("456", new User()
-//                .setId("456")
-//                .setFirstName("Anakin")
-//                .setLastName("Skywalker"));
-//
-//        users.put("789", new User()
-//                .setId("789")
-//                .setFirstName("Oliver")
-//                .setLastName("Hutton"));
+        users.put("123", new User()
+                .setId("123")
+                .setFirstName("Leeroy")
+                .setLastName("Jenkins"));
+
+        users.put("456", new User()
+                .setId("456")
+                .setFirstName("Anakin")
+                .setLastName("Skywalker"));
+
+        users.put("789", new User()
+                .setId("789")
+                .setFirstName("Oliver")
+                .setLastName("Hutton"));
 
         USERS = Collections.unmodifiableMap(users);
     }
