@@ -27,7 +27,7 @@ public class ExceptionHandlers {
 
         VndErrors.VndError vndError = new VndErrors.VndError(requestIdProvider.get(), "resource not found");
 
-        vndError.add(new Link("http://example.org", "example"));
+//        vndError.add(new Link("http://example.org", "example"));
 
         LOGGER.info("resource not found");
 

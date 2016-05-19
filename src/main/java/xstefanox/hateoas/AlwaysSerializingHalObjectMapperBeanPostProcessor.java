@@ -57,7 +57,7 @@ public class AlwaysSerializingHalObjectMapperBeanPostProcessor implements BeanPo
 
                         // override the default mixins with the ones configured to always serialize empty HAL properties
                         objectMapper.addMixIn(Resources.class, AlwaysSerializingResourcesMixin.class);
-                        objectMapper.addMixIn(ResourceSupport.class, AlwaysSerializingResourceSupportMixin.class);
+//                        objectMapper.addMixIn(ResourceSupport.class, AlwaysSerializingResourceSupportMixin.class);
 
                         return bean;
                     }
