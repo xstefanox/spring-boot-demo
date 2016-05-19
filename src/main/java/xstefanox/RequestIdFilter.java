@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Service
 public class RequestIdFilter extends OncePerRequestFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OncePerRequestFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestIdFilter.class);
 
     public static final String MDC_REQUEST_ID_KEY = "REQUEST_ID";
     public static final String MDC_REQUEST_ID_VALUE_FORMAT = "%s=%s";

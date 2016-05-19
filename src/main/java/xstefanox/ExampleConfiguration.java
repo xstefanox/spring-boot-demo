@@ -34,8 +34,8 @@ public class ExampleConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * Configure the object mapper to always serialize resources using HAL format.
-     * This is needed to correctly serialize VndError resources.
+     * Configure the object mapper to serialize resources using HAL format when the serialization is handled by an
+     * {@link org.springframework.web.bind.annotation.ExceptionHandler}.
      *
      * see http://stackoverflow.com/questions/33957999/custom-error-is-not-rendered-as-hal-in-spring-boot-1-3-and-spring-hateoas-0-19
      */
