@@ -42,8 +42,6 @@ public class RequestIdFilter extends OncePerRequestFilter {
             // save the request id in the mdc, so it can be logged
             MDC.put(MDC_REQUEST_ID_KEY, String.format(MDC_REQUEST_ID_VALUE_FORMAT, MDC_REQUEST_ID_KEY, requestIdProvider.get()));
 
-            LOGGER.info("requested " + request.getServletPath());
-
             filterChain.doFilter(request, response);
 
         } catch (Throwable t) {
@@ -52,8 +50,6 @@ public class RequestIdFilter extends OncePerRequestFilter {
             LOGGER.error("unhandled exception {} : {}", t.getClass(), t.getMessage());
 
         } finally {
-
-            LOGGER.info("request processed");
 
             // clean the current request id from the thread...
             requestIdProvider.unset();

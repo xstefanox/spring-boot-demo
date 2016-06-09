@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
@@ -60,6 +61,18 @@ public class ExampleConfiguration extends WebMvcConfigurerAdapter {
         registration.addUrlPatterns("/api/*");
 
         return registration;
+    }
+
+    /**
+     * Register a filter that handles HTTP request logging.
+     */
+    @Bean
+    public CommonsRequestLoggingFilter commonsRequestLoggingFilter() {
+        CommonsRequestLoggingFilter commonsRequestLoggingFilter = new CommonsRequestLoggingFilter();
+        commonsRequestLoggingFilter.setIncludeQueryString(true);
+        commonsRequestLoggingFilter.setIncludePayload(true);
+        commonsRequestLoggingFilter.setIncludeClientInfo(true);
+        return commonsRequestLoggingFilter;
     }
 
     /**
