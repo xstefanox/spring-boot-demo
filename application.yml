@@ -1,6 +1,6 @@
-#spring:
-#  main:
-#    web-environment: false
+spring:
+  main:
+    web-environment: true
 
 logging:
   pattern:

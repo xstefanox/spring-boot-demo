@@ -3,11 +3,14 @@ package xstefanox;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Import;
 import xstefanox.entity.Book;
 import xstefanox.entity.User;
+import xstefanox.rest.RestConfiguration;
 
-@SpringBootApplication
+@EnableAutoConfiguration
+@Import(RestConfiguration.class)
 public class ExampleApplication {
 
     public static final Map<String, User> USERS = new HashMap<>();

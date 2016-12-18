@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -22,8 +23,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import xstefanox.rest.filter.RequestIdFilter;
 
 @EnableSwagger2
-@EnableAutoConfiguration
 @Configuration
+@ComponentScan   // import beans in the same package of this class (to enable filters, controllers, resource assemblers, etc.)
+@ConditionalOnWebApplication
 public class RestConfiguration extends WebMvcConfigurerAdapter {
 
     /**
