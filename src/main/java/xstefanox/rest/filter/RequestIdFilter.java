@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.IdGenerator;
 import org.springframework.web.filter.OncePerRequestFilter;
-import xstefanox.rest.RequestIdProvider;
 
 /**
  * Automatically set a random generated ID for the current request.
@@ -22,14 +22,14 @@ public class RequestIdFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestIdFilter.class);
 
-    public static final String MDC_REQUEST_ID_KEY = "REQUEST_ID";
-    public static final String MDC_REQUEST_ID_VALUE_FORMAT = "%s=%s";
+    public static final String REQUEST_ID = "REQUEST_ID";
+    private static final String MDC_REQUEST_ID_VALUE_FORMAT = "%s=%s";
 
-    private RequestIdProvider requestIdProvider;
+    private final IdGenerator idGenerator;
 
     @Autowired
-    public RequestIdFilter(RequestIdProvider requestIdProvider) {
-        this.requestIdProvider = requestIdProvider;
+    public RequestIdFilter(final IdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
     }
 
     @Override
@@ -37,11 +37,13 @@ public class RequestIdFilter extends OncePerRequestFilter {
 
         try {
 
+            UUID requestId = idGenerator.generateId();
+
             // generate the id of the current request
-            requestIdProvider.set(UUID.randomUUID().toString());
+            request.setAttribute(REQUEST_ID, requestId);
 
             // save the request id in the mdc, so it can be logged
-            MDC.put(MDC_REQUEST_ID_KEY, String.format(MDC_REQUEST_ID_VALUE_FORMAT, MDC_REQUEST_ID_KEY, requestIdProvider.get()));
+            MDC.put(REQUEST_ID, String.format(MDC_REQUEST_ID_VALUE_FORMAT, REQUEST_ID, requestId));
 
             filterChain.doFilter(request, response);
 
@@ -53,10 +55,10 @@ public class RequestIdFilter extends OncePerRequestFilter {
         } finally {
 
             // clean the current request id from the thread...
-            requestIdProvider.unset();
+            request.removeAttribute(REQUEST_ID);
 
             // ...and from the mdc
-            MDC.remove(MDC_REQUEST_ID_KEY);
+            MDC.remove(REQUEST_ID);
         }
     }
 }

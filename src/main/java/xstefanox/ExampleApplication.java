@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.IdGenerator;
+import org.springframework.util.JdkIdGenerator;
 import xstefanox.entity.Book;
 import xstefanox.entity.User;
 import xstefanox.rest.RestConfiguration;
@@ -56,5 +59,10 @@ public class ExampleApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ExampleApplication.class, args);
+    }
+
+    @Bean
+    public IdGenerator idGenerator() {
+        return new JdkIdGenerator();
     }
 }
