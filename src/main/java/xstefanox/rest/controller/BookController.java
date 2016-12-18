@@ -10,7 +10,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.util.IdGenerator;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -20,6 +22,7 @@ import xstefanox.rest.resource.BookResource;
 import xstefanox.rest.resourceassembler.BookResourceAssembler;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static xstefanox.ExampleApplication.BOOKS;
 
 @RestController
@@ -30,13 +33,16 @@ public class BookController {
 
     private final PagedResourcesAssembler<Book> bookPagedResourcesAssembler;
     private final BookResourceAssembler bookResourceAssembler;
+    private final IdGenerator idGenerator;
 
     @Autowired
     public BookController(
             final PagedResourcesAssembler<Book> bookPagedResourcesAssembler,
-            final BookResourceAssembler bookResourceAssembler) {
+            final BookResourceAssembler bookResourceAssembler,
+            final IdGenerator idGenerator) {
         this.bookPagedResourcesAssembler = bookPagedResourcesAssembler;
         this.bookResourceAssembler = bookResourceAssembler;
+        this.idGenerator = idGenerator;
     }
 
     @RequestMapping(method = GET)
@@ -53,8 +59,8 @@ public class BookController {
     }
 
     @RequestMapping(
-            path = "/{bookId}",
-            method = GET)
+            method = GET,
+            path = "/{bookId}")
     public BookResource getBook(@PathVariable String bookId) {
 
         LOGGER.debug("bookId = {}", bookId);
@@ -64,6 +70,16 @@ public class BookController {
         if (book == null) {
             throw new ResourceNotFoundException();
         }
+
+        return bookResourceAssembler.toResource(book);
+    }
+
+    @RequestMapping(method = POST)
+    public BookResource addBook(@RequestBody Book book) {
+
+        book.setId(idGenerator.generateId().toString());
+
+        BOOKS.put(book.getId(), book);
 
         return bookResourceAssembler.toResource(book);
     }
