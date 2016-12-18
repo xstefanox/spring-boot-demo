@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import xstefanox.entity.Book;
+import xstefanox.entity.User;
 
 @SpringBootApplication
 public class ExampleApplication {

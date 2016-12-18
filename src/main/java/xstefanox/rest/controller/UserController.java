@@ -1,4 +1,4 @@
-package xstefanox;
+package xstefanox.rest.controller;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
+import xstefanox.entity.Book;
+import xstefanox.rest.exception.ResourceNotFoundException;
+import xstefanox.entity.User;
+import xstefanox.rest.resource.BookResource;
+import xstefanox.rest.resource.UserResource;
+import xstefanox.rest.resourceassembler.BookResourceAssembler;
+import xstefanox.rest.resourceassembler.UserResourceAssembler;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static xstefanox.ExampleApplication.USERS;
@@ -25,13 +32,19 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private PagedResourcesAssembler<User> userPagedResourcesAssembler;
-    private PagedResourcesAssembler<Book> bookPagedResourcesAssembler;
+    private final UserResourceAssembler userResourceAssembler;
+    private final BookResourceAssembler bookResourceAssembler;
+    private final PagedResourcesAssembler<User> userPagedResourcesAssembler;
+    private final PagedResourcesAssembler<Book> bookPagedResourcesAssembler;
 
     @Autowired
     public UserController(
-            PagedResourcesAssembler<User> userPagedResourcesAssembler,
-            PagedResourcesAssembler<Book> bookPagedResourcesAssembler) {
+            final UserResourceAssembler userResourceAssembler,
+            final BookResourceAssembler bookResourceAssembler,
+            final PagedResourcesAssembler<User> userPagedResourcesAssembler,
+            final PagedResourcesAssembler<Book> bookPagedResourcesAssembler) {
+        this.userResourceAssembler = userResourceAssembler;
+        this.bookResourceAssembler = bookResourceAssembler;
         this.userPagedResourcesAssembler = userPagedResourcesAssembler;
         this.bookPagedResourcesAssembler = bookPagedResourcesAssembler;
     }
@@ -45,8 +58,6 @@ public class UserController {
     public PagedResources<UserResource> getUsers(@ApiIgnore Pageable pageable) {
 
         LOGGER.debug("pageable = {}", pageable);
-
-        UserResourceAssembler userResourceAssembler = new UserResourceAssembler(UserController.class, UserResource.class);
 
         return userPagedResourcesAssembler.toResource(new PageImpl<>(new ArrayList<>(USERS.values())), userResourceAssembler);
     }
@@ -63,8 +74,6 @@ public class UserController {
         if (user == null) {
             throw new ResourceNotFoundException();
         }
-
-        UserResourceAssembler userResourceAssembler = new UserResourceAssembler(UserController.class, UserResource.class);
 
         return userResourceAssembler.toResource(user);
     }
@@ -88,8 +97,6 @@ public class UserController {
         }
 
         Page<Book> books = new PageImpl<>(user.getBooks());
-
-        BookResourceAssembler bookResourceAssembler = new BookResourceAssembler(BookController.class, BookResource.class);
 
         return bookPagedResourcesAssembler.toResource(books, bookResourceAssembler);
 

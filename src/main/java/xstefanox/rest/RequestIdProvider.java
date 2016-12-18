@@ -1,4 +1,4 @@
-package xstefanox;
+package xstefanox.rest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;

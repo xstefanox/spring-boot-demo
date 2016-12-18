@@ -1,4 +1,4 @@
-package xstefanox.hateoas;
+package xstefanox.rest.hateoas;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

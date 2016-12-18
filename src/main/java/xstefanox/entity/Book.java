@@ -1,4 +1,4 @@
-package xstefanox;
+package xstefanox.entity;
 
 import org.springframework.data.annotation.Id;
 

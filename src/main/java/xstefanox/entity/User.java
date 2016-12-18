@@ -1,4 +1,4 @@
-package xstefanox;
+package xstefanox.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;

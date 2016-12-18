@@ -1,11 +1,12 @@
-package xstefanox;
+package xstefanox.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
@@ -18,11 +19,12 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import xstefanox.rest.filter.RequestIdFilter;
 
 @EnableSwagger2
 @EnableAutoConfiguration
 @Configuration
-public class ExampleConfiguration extends WebMvcConfigurerAdapter {
+public class RestConfiguration extends WebMvcConfigurerAdapter {
 
     /**
      * Configure content negotiation to only support Accept header.

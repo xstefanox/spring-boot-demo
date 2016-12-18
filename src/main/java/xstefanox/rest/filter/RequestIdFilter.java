@@ -1,4 +1,4 @@
-package xstefanox;
+package xstefanox.rest.filter;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import xstefanox.rest.RequestIdProvider;
 
 /**
  * Automatically set a random generated ID for the current request.
