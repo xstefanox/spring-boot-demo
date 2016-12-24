@@ -4,7 +4,7 @@ spring:
 
 logging:
   pattern:
-    console: "%date{\"yyyy-MM-dd'T'HH:mm:ss,SSSXXX\", UTC} [%thread] %-5level %40.40logger{40} - [%mdc{REQUEST_ID}][%mdc{ACCOUNT_ID}] %msg %n"
+    console: "%date{\"yyyy-MM-dd'T'HH:mm:ss,SSSXXX\", UTC} [%thread] %-5level %40.40logger{40} - [%mdc{REQUEST_ID}][%mdc{CLIENT_ADDRESS}] %msg %n"
   level:
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 

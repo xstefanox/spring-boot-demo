@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.PathSelectors;
@@ -21,6 +19,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import xstefanox.rest.filter.RequestIdFilter;
+import xstefanox.rest.filter.RequestLoggerFilter;
+import xstefanox.rest.filter.RequestWrapperFilter;
 
 @EnableSwagger2
 @Configuration
@@ -55,28 +55,45 @@ public class RestConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * Register a filter that handles the request ID for every request.
+     * Register a filter that generates a request ID for every request.
      */
     @Bean
-    public FilterRegistrationBean registration(RequestIdFilter requestIdFilter) {
+    public FilterRegistrationBean requestIdRegistrationBean(RequestIdFilter requestIdFilter) {
 
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(requestIdFilter);
         registration.addUrlPatterns("/api/*");
+        registration.setOrder(1);
 
         return registration;
     }
 
     /**
-     * Register a filter that handles HTTP request logging.
+     * Register a filter that logs every request.
      */
     @Bean
-    public CommonsRequestLoggingFilter commonsRequestLoggingFilter() {
-        CommonsRequestLoggingFilter commonsRequestLoggingFilter = new CommonsRequestLoggingFilter();
-        commonsRequestLoggingFilter.setIncludeQueryString(true);
-        commonsRequestLoggingFilter.setIncludePayload(true);
-        commonsRequestLoggingFilter.setIncludeClientInfo(true);
-        return commonsRequestLoggingFilter;
+    public FilterRegistrationBean requestLoggerRegistrationBean(RequestLoggerFilter requestLoggerFilter) {
+
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(requestLoggerFilter);
+        registration.addUrlPatterns("/api/*");
+        registration.setOrder(2);
+
+        return registration;
+    }
+
+    /**
+     * Register a filter that logs every request.
+     */
+    @Bean
+    public FilterRegistrationBean requestWrapperRegistrationBean(RequestWrapperFilter requestWrapperFilter) {
+
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(requestWrapperFilter);
+        registration.addUrlPatterns("/api/*");
+        registration.setOrder(3);
+
+        return registration;
     }
 
     /**
