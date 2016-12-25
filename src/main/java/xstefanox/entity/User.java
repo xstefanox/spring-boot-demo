@@ -3,7 +3,7 @@ package xstefanox.entity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 public class User {
 

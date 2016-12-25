@@ -1,6 +1,6 @@
 package xstefanox.entity;
 
-import org.springframework.data.annotation.Id;
+import javax.persistence.Id;
 
 public class Book {
 

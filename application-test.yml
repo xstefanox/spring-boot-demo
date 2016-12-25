@@ -2,12 +2,16 @@ spring:
   main:
     web-environment: true
   datasource:
-    url: jdbc:mysql://localhost:9000/example?useSSL=false
+    url: jdbc:h2:mem:TEST;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: user
     password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driverClassName: org.h2.Driver
   jpa:
     generate-ddl: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
 
 logging:
   pattern:
